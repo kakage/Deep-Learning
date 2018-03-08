@@ -1,20 +1,17 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 """
-L_layer_model.py
-
-Created on Sat Feb 24 22:16:12 2018
+Created on Tue Mar  6 22:31:22 2018
 
 @author: wangyaoge
 """
-
 import time
 import h5py
 import matplotlib.pyplot as plt
 import scipy
 from PIL import Image
 from scipy import ndimage
-from L_Layer_Model_Utils import *
+from L_Layer_Model_Tensorflow_Utils import *
 
 plt.rcParams['figure.figsize'] = (5.0, 4.0) # set default size of plots
 plt.rcParams['image.interpolation'] = 'nearest'
@@ -30,6 +27,7 @@ layers_dims = [12288, 20, 7, 5, 1]   #  4-layer model
 # Example of a picture
 index = 10
 plt.imshow(train_x_orig[index])
+plt.show()
 print ("y = " + str(train_y[0,index]) + ". It's a " + classes[train_y[0,index]].decode("utf-8") +  " picture.")
 
 # Explore your dataset 
@@ -51,17 +49,15 @@ train_x_flatten = train_x_orig.reshape(train_x_orig.shape[0], -1).T   # The "-1"
 test_x_flatten = test_x_orig.reshape(test_x_orig.shape[0], -1).T
 
 # Standardize data to have feature values between 0 and 1.
-train_x = train_x_flatten/255.
-test_x = test_x_flatten/255.
+train_x = train_x_flatten/255
+test_x = test_x_flatten/255
 
 print ("train_x's shape: " + str(train_x.shape))
 print ("test_x's shape: " + str(test_x.shape))
 
 # Use your model
-parameters = L_layer_model(train_x, train_y, layers_dims, num_iterations = 2500, print_cost = True)
+parameters = tensorflow_model(train_x, train_y, layers_dims, learning_rate = 0.0001, num_epochs = 1500, minibatch_size = 16, print_cost = True)
+print ("training set:")
 pred_train = predict(train_x, train_y, parameters)
+print ("test set:")
 pred_test = predict(test_x, test_y, parameters)
-
-# Results analysis
-print_mislabeled_images(classes, test_x, test_y, pred_test)
-

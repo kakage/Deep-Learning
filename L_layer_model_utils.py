@@ -7,10 +7,6 @@ L_layer_model_utils
 
 @author: wangyaoge
 """
-import h5py
-import numpy as np
-
-
 import numpy as np
 import matplotlib.pyplot as plt
 import h5py
@@ -176,41 +172,6 @@ def L_layer_model(X, Y, layers_dims, learning_rate = 0.0075, num_iterations = 30
     return parameters
 
 
-def initialize_parameters(n_x, n_h, n_y):
-    """
-    Argument:
-    n_x -- size of the input layer
-    n_h -- size of the hidden layer
-    n_y -- size of the output layer
-    
-    Returns:
-    parameters -- python dictionary containing your parameters:
-                    W1 -- weight matrix of shape (n_h, n_x)
-                    b1 -- bias vector of shape (n_h, 1)
-                    W2 -- weight matrix of shape (n_y, n_h)
-                    b2 -- bias vector of shape (n_y, 1)
-    """
-    
-    np.random.seed(1)
-    
-    W1 = np.random.randn(n_h, n_x)*0.01
-    b1 = np.zeros((n_h, 1))
-    W2 = np.random.randn(n_y, n_h)*0.01
-    b2 = np.zeros((n_y, 1))
-    
-    assert(W1.shape == (n_h, n_x))
-    assert(b1.shape == (n_h, 1))
-    assert(W2.shape == (n_y, n_h))
-    assert(b2.shape == (n_y, 1))
-    
-    parameters = {"W1": W1,
-                  "b1": b1,
-                  "W2": W2,
-                  "b2": b2}
-    
-    return parameters     
-
-
 def initialize_parameters_deep(layer_dims):
     """
     Arguments:
@@ -233,7 +194,6 @@ def initialize_parameters_deep(layer_dims):
         assert(parameters['W' + str(l)].shape == (layer_dims[l], layer_dims[l-1]))
         assert(parameters['b' + str(l)].shape == (layer_dims[l], 1))
 
-        
     return parameters
 
 def linear_forward(A, W, b):
@@ -314,6 +274,7 @@ def L_model_forward(X, parameters):
         caches.append(cache)
     
     # Implement LINEAR -> SIGMOID. Add "cache" to the "caches" list.
+
     AL, cache = linear_activation_forward(A, parameters['W' + str(L)], parameters['b' + str(L)], activation = "sigmoid")
     caches.append(cache)
     
